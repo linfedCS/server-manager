@@ -3,7 +3,7 @@ import type { FunctionPlugin } from 'vue'
 
 import ky from 'ky'
 
-import { setHttp } from '@/modules/http/useHttp'
+import { setHttp } from './useHttp'
 
 declare module 'vue' {
     interface ComponentCustomProperties {

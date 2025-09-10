@@ -8,39 +8,39 @@
             />
         </template>
 
-        <template #title>Advanced Card</template>
+        <template #title>{{ server.name }}</template>
 
         <template #content>
-            <ul class="server-card__list">
-                <li
-                    v-for="item in data"
-                    :key="item.title"
-                    class="server-card__list-item"
-                >
-                    <span>{{ item.title }}:</span>
-                    <span>{{ item.value }}</span>
-                </li>
-            </ul>
+            <ServerCardInfo
+                v-if="server.status === 'enabled'"
+                :server
+            />
         </template>
 
         <template #footer>
             <div class="server-card__footer">
                 <div class="server-card__actions">
                     <Button
+                        v-if="server.status === 'disabled'"
                         icon="pi pi-play"
                         size="small"
+                        label="Запустить сервер"
+                        style="width: 100%"
                     />
+
                     <Button
+                        v-if="server.status === 'enabled'"
                         icon="pi pi-power-off"
                         severity="secondary"
                         size="small"
                     />
                 </div>
 
-                <div class="server-card__ip">
-                    <span>linfed.ru:28012</span>
-                    <i class="pi pi-copy" />
-                </div>
+                <ServerIp
+                    v-if="server.status === 'enabled'"
+                    :ip="server.ip"
+                    :port="server.port"
+                />
             </div>
         </template>
     </Card>
@@ -50,17 +50,14 @@
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 
-interface ServerData {
-    title: string
-    value: string | number
-}
+import type { CSServer } from '@/entities/Server'
 
-const data: ServerData[] = [
-    { title: 'Карта', value: 'de_mirage' },
-    { title: 'Игроков', value: 10 },
-    { title: 'Версия', value: '1.0.0' },
-    { title: 'Онлайн', value: '13/16' }
-]
+import ServerCardInfo from '@/features/ServerCard/ServerCardInfo.vue'
+import { ServerIp } from '@/shared/ui'
+
+defineProps<{
+    server: CSServer
+}>()
 </script>
 
 <style lang="scss">
@@ -75,21 +72,6 @@ const data: ServerData[] = [
         object-fit: cover;
     }
 
-    &__list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        padding: 0;
-        margin: 0;
-        opacity: 0.5;
-    }
-
-    &__list-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
     &__footer {
         display: flex;
         align-items: center;
@@ -99,14 +81,21 @@ const data: ServerData[] = [
     &__actions {
         display: flex;
         gap: 4px;
+        width: 100%;
     }
 
-    &__ip {
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        cursor: pointer;
+    .p-card {
+        &-body {
+            height: 100%;
+        }
+
+        &-footer {
+            margin-top: auto;
+        }
+
+        &-content {
+            height: 100%;
+        }
     }
 }
 </style>
