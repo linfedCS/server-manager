@@ -1,1 +1,1 @@
-export { default as ServerCard } from './ServerCard.vue'
+export { default as ServerCard } from './ui/ServerCard.vue'

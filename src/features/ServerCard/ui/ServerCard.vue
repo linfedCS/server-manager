@@ -52,7 +52,7 @@ import Card from 'primevue/card'
 
 import type { CSServer } from '@/entities/Server'
 
-import ServerCardInfo from '@/features/ServerCard/ServerCardInfo.vue'
+import ServerCardInfo from '@/features/ServerCard/ui/ServerCardInfo.vue'
 import { ServerIp } from '@/shared/ui'
 
 defineProps<{
