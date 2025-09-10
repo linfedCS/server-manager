@@ -9,5 +9,15 @@ export default defineConfig({
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `
+                    @use 'include-media/dist/_include-media.scss' as *;
+                    @use '@/app/assets/styles/breakpoints.scss' as *;
+                `
+            }
+        }
     }
 })

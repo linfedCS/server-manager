@@ -76,5 +76,17 @@ const servers = ref<CSServer[]>([
         gap: 20px;
         margin-top: 40px;
     }
+
+    @include media('<desktop') {
+        &__servers {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @include media('<tablet') {
+        &__servers {
+            grid-template-columns: 1fr;
+        }
+    }
 }
 </style>
