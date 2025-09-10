@@ -22,10 +22,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import type { CSServer } from '@/entities/Server'
 
+import { useServer } from '@/entities/Server/model/useServer'
 import { ServerCard } from '@/features/ServerCard'
 import { AppHeading } from '@/shared/ui'
 
@@ -56,6 +57,15 @@ const servers = ref<CSServer[]>([
         players_max: 16
     }
 ])
+
+const { getServers } = useServer()
+
+onMounted(async () => {
+    const servers = await getServers()
+
+    // eslint-disable-next-line no-console
+    console.log(servers)
+})
 </script>
 
 <style lang="scss">
