@@ -13,9 +13,9 @@
         <template #content>
             <ul class="server-card__list">
                 <li
-                    class="server-card__list-item"
                     v-for="item in data"
                     :key="item.title"
+                    class="server-card__list-item"
                 >
                     <span>{{ item.title }}:</span>
                     <span>{{ item.value }}</span>
@@ -47,8 +47,8 @@
 </template>
 
 <script lang="ts" setup>
-import Card from 'primevue/card'
 import Button from 'primevue/button'
+import Card from 'primevue/card'
 
 interface ServerData {
     title: string

@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import AppHeading from './components/shared/AppHeading.vue'
 import ServerCard from './components/ServerCard/index.vue'
+import AppHeading from './components/shared/AppHeading.vue'
 </script>
 
 <style lang="scss">
