@@ -3,7 +3,7 @@
         <template #header>
             <img
                 alt="user header"
-                src="/images/maps/de_mirage.jpeg"
+                :src="server.status === 'offline' ? '/images/maps/placeholder.jpg' : '/images/maps/de_mirage.jpeg'"
                 class="server-card__header-image"
             />
         </template>
@@ -27,7 +27,7 @@
                         label="Запустить сервер"
                         style="width: 100%"
                         :loading="isStartLoading"
-                        @click="onStartServer(server.id)"
+                        @click="onStartServerHandler"
                     />
 
                     <Button
@@ -36,7 +36,7 @@
                         severity="secondary"
                         size="small"
                         :loading="isStopLoading"
-                        @click="onStopServer(server.id)"
+                        @click="onStopServerHandler"
                     />
                 </div>
 
@@ -56,16 +56,29 @@ import Card from 'primevue/card'
 
 import type { CSServer } from '@/entities/Server'
 
+import { useServer } from '@/entities/Server'
 import ServerCardInfo from '@/features/ServerCard/ui/ServerCardInfo.vue'
 import { ServerIp } from '@/shared/ui'
 
-defineProps<{
+const props = defineProps<{
     server: CSServer
-    onStartServer: (id: number) => void
-    onStopServer: (id: number) => void
-    isStartLoading: boolean
-    isStopLoading: boolean
 }>()
+
+const emit = defineEmits<{
+    (e: 'update:server', server: CSServer): void
+}>()
+
+const { onStartServer, onStopServer, isStartLoading, isStopLoading } = useServer()
+
+const onStartServerHandler = async () => {
+    const response = await onStartServer(props.server.id)
+    emit('update:server', response?.data ?? props.server)
+}
+
+const onStopServerHandler = async () => {
+    const response = await onStopServer(props.server.id)
+    emit('update:server', response?.data ?? props.server)
+}
 </script>
 
 <style lang="scss">

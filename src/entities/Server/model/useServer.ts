@@ -1,12 +1,12 @@
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 import type { CSServer } from '@/entities/Server/model/types'
+import type { HTTPResponse } from '@/shared/http'
 
 import { useHttp } from '@/shared/http'
 
-export const useServer = (fetchOnMounted = false) => {
+export const useServer = () => {
     const http = useHttp()
-    const servers = ref<CSServer[]>([])
 
     const isStartLoading = ref(false)
     const isStopLoading = ref(false)
@@ -25,7 +25,7 @@ export const useServer = (fetchOnMounted = false) => {
                     json: { id }
                 })
                 /** TODO: неверный тип ответа */
-                .json<CSServer>()
+                .json<HTTPResponse<CSServer>>()
 
             return response
         } catch (error) {
@@ -44,7 +44,7 @@ export const useServer = (fetchOnMounted = false) => {
                     json: { id }
                 })
                 /** TODO: неверный тип ответа */
-                .json<CSServer>()
+                .json<HTTPResponse<CSServer>>()
 
             return response
         } catch (error) {
@@ -54,15 +54,8 @@ export const useServer = (fetchOnMounted = false) => {
         }
     }
 
-    onMounted(async () => {
-        if (fetchOnMounted) {
-            servers.value = await getServers()
-        }
-    })
-
     return {
         getServers,
-        servers,
         onStartServer,
         onStopServer,
         isStartLoading,

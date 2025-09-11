@@ -15,10 +15,7 @@
                     v-for="server in servers"
                     :key="server.id"
                     :server="server"
-                    :on-start-server="onStartServer"
-                    :on-stop-server="onStopServer"
-                    :is-start-loading="isStartLoading"
-                    :is-stop-loading="isStopLoading"
+                    @update:server="updateServer"
                 />
             </div>
         </div>
@@ -26,11 +23,24 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
+import type { CSServer } from '@/entities/Server'
+
 import { useServer } from '@/entities/Server'
 import { ServerCard } from '@/features/ServerCard'
 import { AppHeading } from '@/shared/ui'
 
-const { servers, onStartServer, onStopServer, isStartLoading, isStopLoading } = useServer(true)
+const servers = ref<CSServer[]>([])
+const { getServers } = useServer()
+
+onMounted(async () => {
+    servers.value = await getServers()
+})
+
+const updateServer = (server: CSServer) => {
+    servers.value = servers.value.map(s => (s.id === server.id ? server : s))
+}
 </script>
 
 <style lang="scss">
