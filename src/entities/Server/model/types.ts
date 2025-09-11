@@ -1,15 +1,15 @@
 interface CSServerBase {
     id: number
     name: string
-    status: 'enabled' | 'disabled'
+    status: 'online' | 'offline'
 }
 
 export interface CSServerDisabled extends CSServerBase {
-    status: 'disabled'
+    status: 'offline'
 }
 
 export interface CSServerEnabled extends CSServerBase {
-    status: 'enabled'
+    status: 'online'
     ip: string
     port: number
     map: string

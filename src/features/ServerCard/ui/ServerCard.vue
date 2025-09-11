@@ -12,7 +12,7 @@
 
         <template #content>
             <ServerCardInfo
-                v-if="server.status === 'enabled'"
+                v-if="server.status === 'online'"
                 :server
             />
         </template>
@@ -21,23 +21,27 @@
             <div class="server-card__footer">
                 <div class="server-card__actions">
                     <Button
-                        v-if="server.status === 'disabled'"
+                        v-if="server.status === 'offline'"
                         icon="pi pi-play"
                         size="small"
                         label="Запустить сервер"
                         style="width: 100%"
+                        :loading="isStartLoading"
+                        @click="onStartServer(server.id)"
                     />
 
                     <Button
-                        v-if="server.status === 'enabled'"
+                        v-if="server.status === 'online'"
                         icon="pi pi-power-off"
                         severity="secondary"
                         size="small"
+                        :loading="isStopLoading"
+                        @click="onStopServer(server.id)"
                     />
                 </div>
 
                 <ServerIp
-                    v-if="server.status === 'enabled'"
+                    v-if="server.status === 'online'"
                     :ip="server.ip"
                     :port="server.port"
                 />
@@ -57,6 +61,10 @@ import { ServerIp } from '@/shared/ui'
 
 defineProps<{
     server: CSServer
+    onStartServer: (id: number) => void
+    onStopServer: (id: number) => void
+    isStartLoading: boolean
+    isStopLoading: boolean
 }>()
 </script>
 

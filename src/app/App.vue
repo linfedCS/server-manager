@@ -15,6 +15,10 @@
                     v-for="server in servers"
                     :key="server.id"
                     :server="server"
+                    :on-start-server="onStartServer"
+                    :on-stop-server="onStopServer"
+                    :is-start-loading="isStartLoading"
+                    :is-stop-loading="isStopLoading"
                 />
             </div>
         </div>
@@ -22,50 +26,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-
-import type { CSServer } from '@/entities/Server'
-
-import { useServer } from '@/entities/Server/model/useServer'
+import { useServer } from '@/entities/Server'
 import { ServerCard } from '@/features/ServerCard'
 import { AppHeading } from '@/shared/ui'
 
-const servers = ref<CSServer[]>([
-    {
-        id: 1,
-        name: 'Server 1',
-        status: 'enabled',
-        ip: '127.0.0.1',
-        port: 28012,
-        map: 'de_mirage',
-        players_current: 10,
-        players_max: 16
-    },
-    {
-        id: 2,
-        name: 'Server 2',
-        status: 'disabled'
-    },
-    {
-        id: 3,
-        name: 'Server 3',
-        status: 'enabled',
-        ip: '127.0.0.1',
-        port: 28012,
-        map: 'de_mirage',
-        players_current: 10,
-        players_max: 16
-    }
-])
-
-const { getServers } = useServer()
-
-onMounted(async () => {
-    const servers = await getServers()
-
-    // eslint-disable-next-line no-console
-    console.log(servers)
-})
+const { servers, onStartServer, onStopServer, isStartLoading, isStopLoading } = useServer(true)
 </script>
 
 <style lang="scss">
