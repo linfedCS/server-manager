@@ -35,7 +35,6 @@
                             icon="pi pi-cog"
                             size="small"
                             severity="secondary"
-                            :loading="isStopLoading"
                             @click="isSettingsVisible = true"
                         />
 
