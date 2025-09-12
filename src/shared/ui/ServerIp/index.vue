@@ -1,7 +1,7 @@
 <template>
     <div
         class="server-ip"
-        @click="copyToClipboard(`${ip}:${port}`)"
+        @click="copyToClipboard(`connect ${ip}:${port}; password linfedprac`)"
     >
         <span>{{ ip }}:{{ port }}</span>
         <i class="pi pi-copy" />
