@@ -1,10 +1,10 @@
 import Aura from '@primeuix/themes/aura'
 import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
 import { createApp } from 'vue'
+import 'primeicons/primeicons.css'
 
 import { httpPlugin } from '@/shared/http'
-
-import 'primeicons/primeicons.css'
 
 import './assets/styles/index.scss'
 import App from './App.vue'
@@ -16,6 +16,8 @@ app.use(PrimeVue, {
         preset: Aura
     }
 })
+
+app.use(ToastService)
 
 app.use(httpPlugin)
 

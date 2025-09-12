@@ -20,9 +20,14 @@
             </div>
         </div>
     </main>
+
+    <Teleport to="body">
+        <Toast />
+    </Teleport>
 </template>
 
 <script setup lang="ts">
+import Toast from 'primevue/toast'
 import { onMounted, ref } from 'vue'
 
 import type { CSServer } from '@/entities/Server'
