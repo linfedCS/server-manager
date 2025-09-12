@@ -18,3 +18,12 @@ export interface CSServerEnabled extends CSServerBase {
 }
 
 export type CSServer = CSServerEnabled | CSServerDisabled
+
+export interface CSMap {
+    id: number
+    name: string
+}
+
+export interface CSServerSettings {
+    map_id: CSMap['id']
+}

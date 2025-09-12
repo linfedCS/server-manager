@@ -30,14 +30,23 @@
                         @click="onStartServerHandler"
                     />
 
-                    <Button
-                        v-if="server.status === 'online'"
-                        icon="pi pi-power-off"
-                        severity="secondary"
-                        size="small"
-                        :loading="isStopLoading"
-                        @click="onStopServerHandler"
-                    />
+                    <template v-if="server.status === 'online'">
+                        <Button
+                            icon="pi pi-cog"
+                            size="small"
+                            severity="secondary"
+                            :loading="isStopLoading"
+                            @click="isSettingsVisible = true"
+                        />
+
+                        <Button
+                            icon="pi pi-power-off"
+                            severity="secondary"
+                            size="small"
+                            :loading="isStopLoading"
+                            @click="onStopServerHandler"
+                        />
+                    </template>
                 </div>
 
                 <ServerIp
@@ -48,16 +57,20 @@
             </div>
         </template>
     </Card>
+
+    <ServerSettings v-model:visible="isSettingsVisible" />
 </template>
 
 <script lang="ts" setup>
 import Button from 'primevue/button'
 import Card from 'primevue/card'
+import { ref } from 'vue'
 
 import type { CSServer } from '@/entities/Server'
 
 import { useServer } from '@/entities/Server'
 import ServerCardInfo from '@/features/ServerCard/ui/ServerCardInfo.vue'
+import ServerSettings from '@/features/ServerCard/ui/ServerSettings.vue'
 import { ServerIp } from '@/shared/ui'
 
 const props = defineProps<{
@@ -67,6 +80,8 @@ const props = defineProps<{
 const emit = defineEmits<{
     (e: 'update:server', server: CSServer): void
 }>()
+
+const isSettingsVisible = ref(false)
 
 const { onStartServer, onStopServer, isStartLoading, isStopLoading } = useServer()
 
