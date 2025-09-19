@@ -15,8 +15,13 @@ export const useMapStore = defineStore('map', () => {
         maps.value = await response.json<CSMap[]>()
     }
 
+    const getMapById = (id: number) => {
+        return maps.value.find(map => map.id === id)
+    }
+
     return {
         maps,
-        getMaps
+        getMaps,
+        getMapById
     }
 })

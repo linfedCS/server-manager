@@ -3,7 +3,7 @@
         <template #header>
             <img
                 alt="user header"
-                :src="server.status === 'offline' ? '/images/maps/placeholder.jpg' : '/images/maps/de_mirage.jpeg'"
+                :src="imageSrc"
                 class="server-card__header-image"
             />
         </template>
@@ -67,10 +67,11 @@
 <script lang="ts" setup>
 import Button from 'primevue/button'
 import Card from 'primevue/card'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import type { CSServer } from '@/entities/Server'
 
+import { useMapStore } from '@/entities/Map'
 import { useServer } from '@/entities/Server'
 import ServerCardInfo from '@/features/ServerCard/ui/ServerCardInfo.vue'
 import ServerSettings from '@/features/ServerCard/ui/ServerSettings.vue'
@@ -86,7 +87,16 @@ const emit = defineEmits<{
 
 const isSettingsVisible = ref(false)
 
+const { getMapById } = useMapStore()
 const { onStartServer, onStopServer, isStartLoading, isStopLoading } = useServer()
+
+const imageSrc = computed(() => {
+    if (props.server.status === 'offline') {
+        return '/images/maps/placeholder.jpg'
+    }
+
+    return `/images/maps/${getMapById(props.server.map_id)?.name}.jpg`
+})
 
 const onStartServerHandler = async () => {
     const response = await onStartServer(props.server.id)
