@@ -26,8 +26,8 @@
                         size="small"
                         label="Запустить сервер"
                         style="width: 100%"
-                        :loading="isStartLoading"
-                        @click="onStartServerHandler"
+                        :loading="startServerMutation.isPending.value"
+                        @click="startServerMutation.mutate(server.id)"
                     />
 
                     <template v-if="server.status === 'online'">
@@ -42,8 +42,8 @@
                             icon="pi pi-power-off"
                             severity="secondary"
                             size="small"
-                            :loading="isStopLoading"
-                            @click="onStopServerHandler"
+                            :loading="stopServerMutation.isPending.value"
+                            @click="stopServerMutation.mutate(server.id)"
                         />
                     </template>
                 </div>
@@ -65,13 +65,15 @@
 </template>
 
 <script lang="ts" setup>
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import { computed, ref } from 'vue'
 
+import type { CSMap } from '@/entities/Map/model/types'
 import type { CSServer } from '@/entities/Server'
 
-import { useMapStore } from '@/entities/Map'
+import { useMap } from '@/entities/Map'
 import { useServer } from '@/entities/Server'
 import ServerCardInfo from '@/features/ServerCard/ui/ServerCardInfo.vue'
 import ServerSettings from '@/features/ServerCard/ui/ServerSettings.vue'
@@ -81,32 +83,41 @@ const props = defineProps<{
     server: CSServer
 }>()
 
-const emit = defineEmits<{
-    (e: 'update:server', server: CSServer): void
-}>()
-
 const isSettingsVisible = ref(false)
 
-const { getMapById } = useMapStore()
-const { onStartServer, onStopServer, isStartLoading, isStopLoading } = useServer()
+const { getMaps } = useMap()
+
+const queryClient = useQueryClient()
+
+const { data: maps } = useQuery<CSMap[]>({
+    queryKey: ['maps'],
+    queryFn: getMaps
+})
+
+const { onStartServer, onStopServer } = useServer()
+
+const startServerMutation = useMutation({
+    mutationFn: onStartServer,
+    onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['servers'] })
+    }
+})
+
+const stopServerMutation = useMutation({
+    mutationFn: onStopServer,
+    onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['servers'] })
+    }
+})
 
 const imageSrc = computed(() => {
     if (props.server.status === 'offline') {
         return '/images/maps/placeholder.jpg'
     }
 
-    return `/images/maps/${getMapById(props.server.map_id)?.name}.jpg`
+    const map_id = props.server.map_id
+    return `/images/maps/${maps.value?.find(map => map.id === map_id)?.name}.jpg`
 })
-
-const onStartServerHandler = async () => {
-    const response = await onStartServer(props.server.id)
-    emit('update:server', response?.data ?? props.server)
-}
-
-const onStopServerHandler = async () => {
-    const response = await onStopServer(props.server.id)
-    emit('update:server', response?.data ?? props.server)
-}
 </script>
 
 <style lang="scss">

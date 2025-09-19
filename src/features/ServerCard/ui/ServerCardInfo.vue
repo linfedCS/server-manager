@@ -12,23 +12,27 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
+import { useQuery } from '@tanstack/vue-query'
 import { computed } from 'vue'
 
 import type { CSServerEnabled } from '@/entities/Server'
 
-import { useMapStore } from '@/entities/Map'
+import { useMap } from '@/entities/Map'
 
 const props = defineProps<{
     server: CSServerEnabled
 }>()
 
-const mapStore = useMapStore()
-const { maps } = storeToRefs(mapStore)
+const { getMaps } = useMap()
+
+const { data: maps } = useQuery({
+    queryKey: ['maps'],
+    queryFn: getMaps
+})
 
 const data = computed(() => {
     return [
-        { title: 'Карта', value: maps.value.find(map => map.id === props.server.map_id)?.name ?? 'Неизвестно' },
+        { title: 'Карта', value: maps.value?.find(map => map.id === props.server.map_id)?.name ?? 'Неизвестно' },
         { title: 'Онлайн', value: `${props.server.players_current}/${props.server.players_max}` }
     ]
 })

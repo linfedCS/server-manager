@@ -24,3 +24,7 @@ export type CSServer = CSServerEnabled | CSServerDisabled
 export interface CSServerSettings {
     map_id: CSMap['id']
 }
+
+export interface CSServerSettingsUpdate extends CSServerSettings {
+    id: CSServer['id']
+}

@@ -1,6 +1,6 @@
 <template>
     <main
-        v-if="isInitialDataLoaded"
+        v-if="isFetched"
         class="main"
     >
         <div class="container">
@@ -18,7 +18,6 @@
                     v-for="server in servers"
                     :key="server.id"
                     :server="server"
-                    @update:server="updateServer"
                 />
             </div>
         </div>
@@ -30,33 +29,21 @@
 </template>
 
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import Toast from 'primevue/toast'
-import { onMounted, ref } from 'vue'
 
 import type { CSServer } from '@/entities/Server'
 
-import { useMapStore } from '@/entities/Map'
 import { useServer } from '@/entities/Server'
 import { ServerCard } from '@/features/ServerCard'
 import { AppHeading } from '@/shared/ui'
 
-const isInitialDataLoaded = ref(false)
-
-const servers = ref<CSServer[]>([])
 const { getServers } = useServer()
 
-const mapStore = useMapStore()
-
-onMounted(async () => {
-    servers.value = await getServers()
-    await mapStore.getMaps()
-
-    isInitialDataLoaded.value = true
+const { isFetched, data: servers } = useQuery<CSServer[]>({
+    queryKey: ['servers'],
+    queryFn: getServers
 })
-
-const updateServer = (server: CSServer) => {
-    servers.value = servers.value.map(s => (s.id === server.id ? server : s))
-}
 </script>
 
 <style lang="scss">
