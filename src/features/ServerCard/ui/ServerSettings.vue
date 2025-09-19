@@ -34,24 +34,24 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { Select } from 'primevue'
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
-import { ref } from 'vue'
 
-import type { CSMap } from '@/entities/Server'
-
+import { useMapStore } from '@/entities/Map'
 import { useServerSettings } from '@/entities/Server'
+
+// const props = defineProps<{
+//     server: CSServerEnabled
+// }>()
 
 const visible = defineModel<boolean>('visible')
 
 const { serverSettingsForm } = useServerSettings()
 
-const maps = ref<CSMap[]>([
-    { id: 0, name: 'de_mirage' },
-    { id: 1, name: 'de_overpass' },
-    { id: 2, name: 'de_dust2' }
-])
+const mapStore = useMapStore()
+const { maps } = storeToRefs(mapStore)
 </script>
 
 <style lang="scss">

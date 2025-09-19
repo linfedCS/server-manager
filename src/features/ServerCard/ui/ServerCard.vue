@@ -57,7 +57,11 @@
         </template>
     </Card>
 
-    <ServerSettings v-model:visible="isSettingsVisible" />
+    <ServerSettings
+        v-if="server.status === 'online'"
+        v-model:visible="isSettingsVisible"
+        :server
+    />
 </template>
 
 <script lang="ts" setup>

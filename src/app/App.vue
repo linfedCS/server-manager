@@ -1,5 +1,8 @@
 <template>
-    <main class="main">
+    <main
+        v-if="isInitialDataLoaded"
+        class="main"
+    >
         <div class="container">
             <AppHeading
                 :level="2"
@@ -32,15 +35,23 @@ import { onMounted, ref } from 'vue'
 
 import type { CSServer } from '@/entities/Server'
 
+import { useMapStore } from '@/entities/Map'
 import { useServer } from '@/entities/Server'
 import { ServerCard } from '@/features/ServerCard'
 import { AppHeading } from '@/shared/ui'
 
+const isInitialDataLoaded = ref(false)
+
 const servers = ref<CSServer[]>([])
 const { getServers } = useServer()
 
+const mapStore = useMapStore()
+
 onMounted(async () => {
     servers.value = await getServers()
+    await mapStore.getMaps()
+
+    isInitialDataLoaded.value = true
 })
 
 const updateServer = (server: CSServer) => {

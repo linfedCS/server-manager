@@ -1,6 +1,8 @@
+import type { CSMap } from '@/entities/Map/model/types'
+
 interface CSServerBase {
     id: number
-    name: string
+    name: CSMap['name']
     status: 'online' | 'offline'
 }
 
@@ -12,17 +14,12 @@ export interface CSServerEnabled extends CSServerBase {
     status: 'online'
     ip: string
     port: number
-    map: string
+    map_id: CSMap['id']
     players_current: number
     players_max: number
 }
 
 export type CSServer = CSServerEnabled | CSServerDisabled
-
-export interface CSMap {
-    id: number
-    name: string
-}
 
 export interface CSServerSettings {
     map_id: CSMap['id']
