@@ -1,4 +1,4 @@
-import type { CSServer, CSServerStartBody, CSServerStopBody } from '@/entities/Server/model'
+import type { CSServer, CSServerStartBody, CSServerStopBody } from '@/entities/Server'
 
 import http from '@/shared/http'
 

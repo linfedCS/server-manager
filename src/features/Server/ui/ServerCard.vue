@@ -69,11 +69,9 @@ import Button from 'primevue/button'
 import Card from 'primevue/card'
 import { computed, ref } from 'vue'
 
-import type { CSMap } from '@/entities/Map/model/types'
-import type { CSServer } from '@/entities/Server'
+import type { CSMap, CSServer } from '@/entities/Server'
 
-import { getMaps } from '@/entities/Map'
-import { isServerOnline, onStartServer, onStopServer } from '@/entities/Server'
+import { getMaps, isServerOnline, onStartServer, onStopServer } from '@/entities/Server'
 import ServerCardInfo from '@/features/Server/ui/ServerCardInfo.vue'
 import ServerSettings from '@/features/Server/ui/ServerSettings.vue'
 import { ServerIp, SkeletonImage } from '@/shared/ui'

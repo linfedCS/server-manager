@@ -1,4 +1,4 @@
-import type { CSServerSettingsUpdate, CSServerSettingsUpdateResponse } from '@/entities/Server/model'
+import type { CSServerSettingsUpdate, CSServerSettingsUpdateResponse } from '@/entities/Server'
 
 import http from '@/shared/http'
 

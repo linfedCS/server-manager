@@ -43,8 +43,7 @@ import { reactive } from 'vue'
 
 import type { CSServerOnline, CSServerSettings } from '@/entities/Server'
 
-import { getMaps } from '@/entities/Map/api'
-import { changeServerSettings } from '@/entities/Server'
+import { changeServerSettings, getMaps } from '@/entities/Server'
 
 const props = defineProps<{
     server: CSServerOnline

@@ -1,4 +1,4 @@
-import type { CSMap } from '@/entities/Map/model/types'
+import type { CSMap } from '@/entities/Server'
 
 import http from '@/shared/http'
 

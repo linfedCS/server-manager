@@ -17,7 +17,7 @@ import { computed } from 'vue'
 
 import type { CSServerOnline } from '@/entities/Server'
 
-import { getMaps } from '@/entities/Map/api'
+import { getMaps } from '@/entities/Server'
 
 const props = defineProps<{
     server: CSServerOnline

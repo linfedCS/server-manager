@@ -10,7 +10,7 @@ const routes = [
     {
         path: '/teamspeak',
         name: 'TeamSpeak',
-        component: () => import('@/pages/TeamSpeak/ui/TeamSpeak.vue')
+        component: () => import('@/pages/TeamSpeak/ui/TeamSpeakPage.vue')
     }
 ]
 
