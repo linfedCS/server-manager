@@ -22,7 +22,7 @@ import { useQuery } from '@tanstack/vue-query'
 import type { CSServer } from '@/entities/Server'
 
 import { getServers } from '@/entities/Server/api/server'
-import ServerCardGrid from '@/features/ServerCard/ui/ServerCardGrid.vue'
+import ServerCardGrid from '@/features/Server/ui/ServersGrid.vue'
 import { AppHeading } from '@/shared/ui'
 
 const { data: servers, isLoading } = useQuery<CSServer[]>({

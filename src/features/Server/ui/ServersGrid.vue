@@ -25,7 +25,7 @@ import { Skeleton } from 'primevue'
 
 import type { CSServer } from '@/entities/Server'
 
-import ServerCard from '@/features/ServerCard/ui/ServerCard.vue'
+import { ServerCard } from '@/features/Server'
 
 const { servers, loading } = defineProps<{
     servers?: CSServer[]

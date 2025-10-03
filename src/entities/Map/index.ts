@@ -1,1 +1,2 @@
-export * from './model/useMap'
+export * from './api'
+export * from './model/types'
