@@ -9,7 +9,6 @@ import './assets/styles/index.scss'
 import { createApp } from 'vue'
 
 import { router } from '@/modules/router'
-import { httpPlugin } from '@/shared/http'
 
 import App from './App.vue'
 
@@ -26,7 +25,6 @@ app.use(PrimeVue, {
 app.directive('ripple', Ripple)
 
 app.use(ToastService)
-app.use(httpPlugin)
 app.use(router)
 
 app.mount('#app')

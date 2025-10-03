@@ -1,22 +1,16 @@
 import type { CSServer, CSServerStartBody, CSServerStopBody } from '@/entities/Server/model/types'
 
-import { useHttp } from '@/shared/http'
+import http from '@/shared/http'
 
 export const useServer = () => {
-    const http = useHttp()
-
     const getServers = async () => {
         const response = await http.get<CSServer[]>('servers')
-        return response.json()
+        return response
     }
 
     const onStartServer = async (body: CSServerStartBody) => {
         try {
-            const response = await http
-                .post(`server-start`, {
-                    json: body
-                })
-                .json<CSServer>()
+            const response = await http.post<CSServer>(`server-start`, body)
 
             return response
         } catch (error) {
@@ -26,12 +20,7 @@ export const useServer = () => {
 
     const onStopServer = async (body: CSServerStopBody) => {
         try {
-            const response = await http
-                .post(`server-stop`, {
-                    json: body
-                })
-                .json<CSServer>()
-
+            const response = await http.post<CSServer>(`server-stop`, body)
             return response
         } catch (error) {
             console.error(error)

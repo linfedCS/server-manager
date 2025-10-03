@@ -1,16 +1,11 @@
 import type { CSServerSettingsUpdate, CSServerSettingsUpdateResponse } from '@/entities/Server/model/types'
 
-import { useHttp } from '@/shared/http'
+import http from '@/shared/http'
 
 export const useServerSettings = () => {
-    const http = useHttp()
-
     const changeServerSettings = async (form: CSServerSettingsUpdate) => {
         try {
-            const response = await http.post<CSServerSettingsUpdateResponse>('server/settings', {
-                json: form
-            })
-
+            const response = await http.post<CSServerSettingsUpdateResponse>('server/settings', form)
             return response
         } catch (err) {
             console.error(err)
