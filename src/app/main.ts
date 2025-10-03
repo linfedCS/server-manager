@@ -1,11 +1,14 @@
 import Aura from '@primeuix/themes/aura'
 import { VueQueryPlugin } from '@tanstack/vue-query'
-import PrimeVue from 'primevue/config'
+import { Ripple } from 'primevue'
 import 'primeicons/primeicons.css'
+import PrimeVue from 'primevue/config'
 import ToastService from 'primevue/toastservice'
-import { createApp } from 'vue'
 
 import './assets/styles/index.scss'
+import { createApp } from 'vue'
+
+import { router } from '@/modules/router'
 import { httpPlugin } from '@/shared/http'
 
 import App from './App.vue'
@@ -20,8 +23,10 @@ app.use(PrimeVue, {
     }
 })
 
-app.use(ToastService)
+app.directive('ripple', Ripple)
 
+app.use(ToastService)
 app.use(httpPlugin)
+app.use(router)
 
 app.mount('#app')
