@@ -1,8 +1,7 @@
 <template>
     <Card class="server-card">
         <template #header>
-            <img
-                alt="user header"
+            <SkeletonImage
                 :src="imageSrc"
                 class="server-card__header-image"
             />
@@ -78,7 +77,7 @@ import { isServerOnline } from '@/entities/Server'
 import { onStartServer, onStopServer } from '@/entities/Server/api/server'
 import ServerCardInfo from '@/features/ServerCard/ui/ServerCardInfo.vue'
 import ServerSettings from '@/features/ServerSettings/ui/ServerSettings.vue'
-import { ServerIp } from '@/shared/ui'
+import { ServerIp, SkeletonImage } from '@/shared/ui'
 
 const props = defineProps<{
     server: CSServer

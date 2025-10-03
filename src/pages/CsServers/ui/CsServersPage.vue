@@ -9,13 +9,10 @@
             Сервера
         </AppHeading>
 
-        <div class="servers__grid">
-            <ServerCard
-                v-for="server in servers"
-                :key="server.server_id"
-                :server="server"
-            />
-        </div>
+        <ServerCardGrid
+            :servers
+            :loading="isLoading"
+        />
     </div>
 </template>
 
@@ -25,10 +22,10 @@ import { useQuery } from '@tanstack/vue-query'
 import type { CSServer } from '@/entities/Server'
 
 import { getServers } from '@/entities/Server/api/server'
-import ServerCard from '@/features/ServerCard/ui/ServerCard.vue'
+import ServerCardGrid from '@/features/ServerCard/ui/ServerCardGrid.vue'
 import { AppHeading } from '@/shared/ui'
 
-const { data: servers } = useQuery<CSServer[]>({
+const { data: servers, isLoading } = useQuery<CSServer[]>({
     queryKey: ['servers'],
     queryFn: getServers
 })
@@ -38,25 +35,6 @@ const { data: servers } = useQuery<CSServer[]>({
 .servers {
     &__heading {
         width: 100%;
-    }
-
-    &__grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin-top: 40px;
-    }
-
-    @include media('<desktop') {
-        &__grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @include media('<tablet') {
-        &__grid {
-            grid-template-columns: 1fr;
-        }
     }
 }
 </style>
