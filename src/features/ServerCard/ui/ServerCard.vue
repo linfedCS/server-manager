@@ -73,8 +73,9 @@ import { computed, ref } from 'vue'
 import type { CSMap } from '@/entities/Map/model/types'
 import type { CSServer } from '@/entities/Server'
 
-import { useMap } from '@/entities/Map'
-import { isServerOnline, useServer } from '@/entities/Server'
+import { getMaps } from '@/entities/Map/api'
+import { isServerOnline } from '@/entities/Server'
+import { onStartServer, onStopServer } from '@/entities/Server/api/server'
 import ServerCardInfo from '@/features/ServerCard/ui/ServerCardInfo.vue'
 import ServerSettings from '@/features/ServerSettings/ui/ServerSettings.vue'
 import { ServerIp } from '@/shared/ui'
@@ -85,16 +86,12 @@ const props = defineProps<{
 
 const isSettingsVisible = ref(false)
 
-const { getMaps } = useMap()
-
 const queryClient = useQueryClient()
 
 const { data: maps } = useQuery<CSMap[]>({
     queryKey: ['maps'],
     queryFn: getMaps
 })
-
-const { onStartServer, onStopServer } = useServer()
 
 const startServerMutation = useMutation({
     mutationFn: onStartServer,

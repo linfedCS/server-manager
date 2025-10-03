@@ -24,11 +24,9 @@ import { useQuery } from '@tanstack/vue-query'
 
 import type { CSServer } from '@/entities/Server'
 
-import { useServer } from '@/entities/Server'
+import { getServers } from '@/entities/Server/api/server'
 import ServerCard from '@/features/ServerCard/ui/ServerCard.vue'
 import { AppHeading } from '@/shared/ui'
-
-const { getServers } = useServer()
 
 const { data: servers } = useQuery<CSServer[]>({
     queryKey: ['servers'],

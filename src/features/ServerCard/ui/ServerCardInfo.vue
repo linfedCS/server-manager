@@ -17,13 +17,11 @@ import { computed } from 'vue'
 
 import type { CSServerOnline } from '@/entities/Server'
 
-import { useMap } from '@/entities/Map'
+import { getMaps } from '@/entities/Map/api'
 
 const props = defineProps<{
     server: CSServerOnline
 }>()
-
-const { getMaps } = useMap()
 
 const { data: maps } = useQuery({
     queryKey: ['maps'],

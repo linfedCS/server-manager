@@ -43,8 +43,8 @@ import { reactive } from 'vue'
 
 import type { CSServerOnline, CSServerSettings } from '@/entities/Server'
 
-import { useMap } from '@/entities/Map'
-import { useServerSettings } from '@/entities/Server'
+import { getMaps } from '@/entities/Map/api'
+import { changeServerSettings } from '@/entities/Server'
 
 const props = defineProps<{
     server: CSServerOnline
@@ -59,8 +59,6 @@ const settingsForm = reactive<CSServerSettings>({
 
 const queryClient = useQueryClient()
 
-const { changeServerSettings } = useServerSettings()
-
 const serverSettingsMutation = useMutation({
     mutationFn: changeServerSettings,
     onSuccess: () => {
@@ -68,8 +66,6 @@ const serverSettingsMutation = useMutation({
         queryClient.invalidateQueries({ queryKey: ['servers'] })
     }
 })
-
-const { getMaps } = useMap()
 
 const { data: maps } = useQuery({
     queryKey: ['maps'],
