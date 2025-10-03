@@ -9,7 +9,7 @@
             v-model="settingsForm.map_id"
             :options="maps"
             option-label="name"
-            option-value="id"
+            option-value="map_id"
             fluid
             placeholder="Карта"
         />
@@ -53,7 +53,8 @@ const props = defineProps<{
 const visible = defineModel<boolean>('visible')
 
 const settingsForm = reactive<CSServerSettings>({
-    server_id: props.server.server_id
+    server_id: props.server.server_id,
+    map_id: props.server.map_id
 })
 
 const queryClient = useQueryClient()
