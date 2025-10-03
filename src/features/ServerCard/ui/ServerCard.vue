@@ -76,7 +76,7 @@ import type { CSServer } from '@/entities/Server'
 import { useMap } from '@/entities/Map'
 import { isServerOnline, useServer } from '@/entities/Server'
 import ServerCardInfo from '@/features/ServerCard/ui/ServerCardInfo.vue'
-import ServerSettings from '@/features/ServerCard/ui/ServerSettings.vue'
+import ServerSettings from '@/features/ServerSettings/ui/ServerSettings.vue'
 import { ServerIp } from '@/shared/ui'
 
 const props = defineProps<{
