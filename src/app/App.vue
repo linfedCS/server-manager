@@ -16,7 +16,7 @@
             <div class="main__servers">
                 <ServerCard
                     v-for="server in servers"
-                    :key="server.id"
+                    :key="server.server_id"
                     :server="server"
                 />
             </div>

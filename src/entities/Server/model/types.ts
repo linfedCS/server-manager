@@ -1,30 +1,19 @@
-import type { CSMap } from '@/entities/Map/model/types'
+import type { components, paths } from '@/modules/openapi/api'
 
-interface CSServerBase {
-    id: number
-    name: CSMap['name']
-    status: 'online' | 'offline'
+export type CSServerOffline = components['schemas']['ServerOffline']
+export type CSServerOnline = components['schemas']['ServerOnline']
+export type CSServer = CSServerOnline | CSServerOffline
+export type CSServerSettingsUpdate = components['schemas']['ServerSettingsRequest']
+export type CSServerSettingsUpdateResponse = paths['/api/server/settings']['post']['responses']['200']['content']['application/json']
+export type CSServerSettings = Exclude<CSServerSettingsUpdate, 'map_id'>
+export type CSServerStartBody = paths['/api/server-start']['post']['requestBody']['content']['application/json']
+export type CSServerStopBody = paths['/api/server-stop']['post']['requestBody']['content']['application/json']
+
+/** Type Guards */
+export function isServerOnline(server: CSServer): server is CSServerOnline {
+    return server.status === 'online'
 }
 
-export interface CSServerDisabled extends CSServerBase {
-    status: 'offline'
-}
-
-export interface CSServerEnabled extends CSServerBase {
-    status: 'online'
-    ip: string
-    port: number
-    map_id: CSMap['id']
-    players_current: number
-    players_max: number
-}
-
-export type CSServer = CSServerEnabled | CSServerDisabled
-
-export interface CSServerSettings {
-    map_id: CSMap['id']
-}
-
-export interface CSServerSettingsUpdate extends CSServerSettings {
-    id: CSServer['id']
+export function isServerOffline(server: CSServer): server is CSServerOffline {
+    return server.status === 'offline'
 }

@@ -12,7 +12,7 @@
 
         <template #content>
             <ServerCardInfo
-                v-if="server.status === 'online'"
+                v-if="isServerOnline(server)"
                 :server
             />
         </template>
@@ -27,10 +27,10 @@
                         label="Запустить сервер"
                         style="width: 100%"
                         :loading="startServerMutation.isPending.value"
-                        @click="startServerMutation.mutate(server.id)"
+                        @click="startServerMutation.mutate({ server_id: server.server_id })"
                     />
 
-                    <template v-if="server.status === 'online'">
+                    <template v-if="isServerOnline(server)">
                         <Button
                             icon="pi pi-cog"
                             size="small"
@@ -43,13 +43,13 @@
                             severity="secondary"
                             size="small"
                             :loading="stopServerMutation.isPending.value"
-                            @click="stopServerMutation.mutate(server.id)"
+                            @click="stopServerMutation.mutate({ server_id: server.server_id })"
                         />
                     </template>
                 </div>
 
                 <ServerIp
-                    v-if="server.status === 'online'"
+                    v-if="isServerOnline(server)"
                     :ip="server.ip"
                     :port="server.port"
                 />
@@ -58,7 +58,7 @@
     </Card>
 
     <ServerSettings
-        v-if="server.status === 'online'"
+        v-if="isServerOnline(server)"
         v-model:visible="isSettingsVisible"
         :server
     />
@@ -74,7 +74,7 @@ import type { CSMap } from '@/entities/Map/model/types'
 import type { CSServer } from '@/entities/Server'
 
 import { useMap } from '@/entities/Map'
-import { useServer } from '@/entities/Server'
+import { isServerOnline, useServer } from '@/entities/Server'
 import ServerCardInfo from '@/features/ServerCard/ui/ServerCardInfo.vue'
 import ServerSettings from '@/features/ServerCard/ui/ServerSettings.vue'
 import { ServerIp } from '@/shared/ui'
@@ -111,12 +111,12 @@ const stopServerMutation = useMutation({
 })
 
 const imageSrc = computed(() => {
-    if (props.server.status === 'offline') {
-        return '/images/maps/placeholder.jpg'
+    if (isServerOnline(props.server)) {
+        const map_id = props.server.map_id
+        return `/images/maps/${maps.value?.find(map => map.map_id === map_id)?.name}.jpg`
     }
 
-    const map_id = props.server.map_id
-    return `/images/maps/${maps.value?.find(map => map.id === map_id)?.name}.jpg`
+    return '/images/maps/placeholder.jpg'
 })
 </script>
 

@@ -1,5 +1,4 @@
-import type { CSServer } from '@/entities/Server/model/types'
-import type { HTTPResponse } from '@/shared/http'
+import type { CSServer, CSServerStartBody, CSServerStopBody } from '@/entities/Server/model/types'
 
 import { useHttp } from '@/shared/http'
 
@@ -7,18 +6,17 @@ export const useServer = () => {
     const http = useHttp()
 
     const getServers = async () => {
-        const response = await http.get('servers')
-        return response.json<CSServer[]>()
+        const response = await http.get<CSServer[]>('servers')
+        return response.json()
     }
 
-    const onStartServer = async (id: number) => {
+    const onStartServer = async (body: CSServerStartBody) => {
         try {
             const response = await http
                 .post(`server-start`, {
-                    json: { id }
+                    json: body
                 })
-                /** TODO: неверный тип ответа */
-                .json<HTTPResponse<CSServer>>()
+                .json<CSServer>()
 
             return response
         } catch (error) {
@@ -26,14 +24,13 @@ export const useServer = () => {
         }
     }
 
-    const onStopServer = async (id: number) => {
+    const onStopServer = async (body: CSServerStopBody) => {
         try {
             const response = await http
                 .post(`server-stop`, {
-                    json: { id }
+                    json: body
                 })
-                /** TODO: неверный тип ответа */
-                .json<HTTPResponse<CSServer>>()
+                .json<CSServer>()
 
             return response
         } catch (error) {

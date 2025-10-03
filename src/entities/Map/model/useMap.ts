@@ -6,8 +6,8 @@ export const useMap = () => {
     const http = useHttp()
 
     const getMaps = async () => {
-        const response = await http.get('maps')
-        return response.json<CSMap[]>()
+        const response = await http.get<CSMap[]>('maps')
+        return response.json()
     }
 
     return {

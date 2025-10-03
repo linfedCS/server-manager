@@ -15,12 +15,12 @@
 import { useQuery } from '@tanstack/vue-query'
 import { computed } from 'vue'
 
-import type { CSServerEnabled } from '@/entities/Server'
+import type { CSServerOnline } from '@/entities/Server'
 
 import { useMap } from '@/entities/Map'
 
 const props = defineProps<{
-    server: CSServerEnabled
+    server: CSServerOnline
 }>()
 
 const { getMaps } = useMap()
@@ -32,7 +32,7 @@ const { data: maps } = useQuery({
 
 const data = computed(() => {
     return [
-        { title: 'Карта', value: maps.value?.find(map => map.id === props.server.map_id)?.name ?? 'Неизвестно' },
+        { title: 'Карта', value: maps.value?.find(map => map.map_id === props.server.map_id)?.name ?? 'Неизвестно' },
         { title: 'Онлайн', value: `${props.server.players_current}/${props.server.players_max}` }
     ]
 })

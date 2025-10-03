@@ -28,7 +28,7 @@
                 label="Сохранить"
                 size="small"
                 :loading="serverSettingsMutation.isPending.value"
-                @click="serverSettingsMutation.mutate({ ...settingsForm, id: server.id })"
+                @click="serverSettingsMutation.mutate(settingsForm)"
             ></Button>
         </div>
     </Dialog>
@@ -41,19 +41,19 @@ import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
 import { reactive } from 'vue'
 
-import type { CSServerEnabled, CSServerSettings } from '@/entities/Server'
+import type { CSServerOnline, CSServerSettings } from '@/entities/Server'
 
 import { useMap } from '@/entities/Map'
 import { useServerSettings } from '@/entities/Server'
 
 const props = defineProps<{
-    server: CSServerEnabled
+    server: CSServerOnline
 }>()
 
 const visible = defineModel<boolean>('visible')
 
 const settingsForm = reactive<CSServerSettings>({
-    map_id: props.server.map_id
+    server_id: props.server.server_id
 })
 
 const queryClient = useQueryClient()
