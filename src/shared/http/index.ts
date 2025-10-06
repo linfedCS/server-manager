@@ -2,12 +2,14 @@ import ky from 'ky'
 
 import type { HttpClient } from '@/shared/http/model'
 
+import { API_URL } from '@/shared/http/config'
+
 const api = ky.create({
     retry: {
         limit: 0
     },
     timeout: 15_000,
-    prefixUrl: 'https://dev.linfed.ru/api' // TODO: в env переменную
+    prefixUrl: API_URL
 })
 
 const http: HttpClient = {
