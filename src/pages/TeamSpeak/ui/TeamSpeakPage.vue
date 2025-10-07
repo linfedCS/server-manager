@@ -17,7 +17,7 @@
                 :expanded-keys="expandedKeys"
             >
                 <template #default="{ node }">
-                    <span class="ts-tree__label">{{ node.label }}</span> {{ node.key }}
+                    {{ node.key }}
                 </template>
             </Tree>
 
@@ -82,8 +82,7 @@ function connect() {
             children: channel.client_nickname.map(client => ({
                 key: client,
                 icon: 'pi pi-user'
-            })),
-            label: 'Комната'
+            }))
         }))
 
         treeNodes.value.splice(0, treeNodes.value.length, ...newNodes)
@@ -126,10 +125,6 @@ onMounted(connect)
     min-width: 300px;
     border-radius: var(--p-form-field-border-radius);
     font-size: 14px;
-
-    &__label {
-        opacity: 0.5;
-    }
 
     .p-tree-node-icon {
         margin-right: 4px;
