@@ -10,7 +10,6 @@ export const getServers = async () => {
 export const onStartServer = async (body: CSServerStartBody) => {
     try {
         const response = await http.post<CSServer>(`server-start`, body)
-
         return response
     } catch (error) {
         console.error(error)

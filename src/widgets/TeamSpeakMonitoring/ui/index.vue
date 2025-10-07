@@ -22,12 +22,7 @@
             </Tree>
 
             <div class="ts-actions">
-                <!-- <Button
-                    type="button"
-                    label="Создать комнату"
-                    size="small"
-                    class="ts-actions__item"
-                /> -->
+                <TeamSpeakCreateChannel />
 
                 <Button
                     type="button"
@@ -48,6 +43,8 @@ import type { TreeNode } from 'primevue/treenode'
 
 import { Button, Skeleton, Tree } from 'primevue'
 import { computed } from 'vue'
+
+import { TeamSpeakCreateChannel } from '@/features/TeamSpeak'
 
 const props = defineProps<{
     nodes: TreeNode[]
