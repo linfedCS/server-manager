@@ -40,7 +40,7 @@ async function generateTSDeclaration() {
 
 async function downloadOpenapiConfig(onSuccess?: () => void) {
     const url = INPUT_FILE_PATH
-    const filePath = `./src/app/openapi/${OUTPUT_OPENAPI_NAME}`
+    const filePath = `./src/shared/openapi/${OUTPUT_OPENAPI_NAME}`
 
     https
         .get(url, response => {
