@@ -11,11 +11,11 @@
     "lint:fsd": "npx steiger ./src",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier src/ \"!src/modules/openapi/api.*\" --write",
-    "openapi": "npx tsx src/modules/openapi/generate.ts && npm run openapi:format",
-    "openapi:format": "prettier --write src/modules/openapi/api.* && npm run lint:fix",
-    "openapi:download": "npx tsx src/modules/openapi/generate.ts --mode download",
-    "openapi:generate": "npx tsx src/modules/openapi/generate.ts --mode generate"
+    "format": "prettier src/ \"!src/app/openapi/api.*\" --write",
+    "openapi": "npx tsx src/app/openapi/generate.ts && npm run openapi:format",
+    "openapi:format": "prettier --write src/app/openapi/api.* && npm run lint:fix",
+    "openapi:download": "npx tsx src/app/openapi/generate.ts --mode download",
+    "openapi:generate": "npx tsx src/app/openapi/generate.ts --mode generate"
   },
   "dependencies": {
     "@primeuix/themes": "^1.2.3",

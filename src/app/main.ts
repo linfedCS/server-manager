@@ -8,7 +8,7 @@ import ToastService from 'primevue/toastservice'
 import './assets/styles/index.scss'
 import { createApp } from 'vue'
 
-import { router } from '@/modules/router'
+import { router } from '@/app/router'
 
 import App from './App.vue'
 

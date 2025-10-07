@@ -1,3 +1,3 @@
-import type { components } from '@/modules/openapi/api'
+import type { components } from '@/app/openapi/api'
 
 export type TSMonitoringItem = components['schemas']['Ts3MonitoringResponse']['data'][number]

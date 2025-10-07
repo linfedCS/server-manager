@@ -1,4 +1,4 @@
-import type { components, paths } from '@/modules/openapi/api'
+import type { components, paths } from '@/app/openapi/api'
 
 export type CSMap = components['schemas']['MapItem']
 export type CSServerOffline = components['schemas']['ServerOffline']
