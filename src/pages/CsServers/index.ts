@@ -1,1 +1,1 @@
-export { default as CsServersPage } from './ui/CsServersPage.vue'
+export { default as CsServersPage } from './ui/index.vue'

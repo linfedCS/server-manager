@@ -1,1 +1,1 @@
-export { default as TeamSpeakPage } from './ui/TeamSpeakPage.vue'
+export { default as TeamSpeakPage } from './ui/index.vue'
