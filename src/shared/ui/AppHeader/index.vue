@@ -36,14 +36,14 @@ const route = useRoute()
 const items = computed<MenuItem[]>(() => {
     return [
         {
-            label: 'CS сервера',
-            icon: 'pi pi-server',
-            route: 'CsServers'
-        },
-        {
             label: 'TeamSpeak',
             icon: 'pi pi-microphone',
             route: 'TeamSpeak'
+        },
+        {
+            label: 'CS сервера',
+            icon: 'pi pi-server',
+            route: 'CsServers'
         }
     ].map(r => ({ ...r, active: route.name === r.route }))
 })

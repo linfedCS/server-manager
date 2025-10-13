@@ -4,13 +4,13 @@ const routes = [
     {
         path: '/cs-servers',
         name: 'CsServers',
-        component: () => import('@/pages/CsServers/ui/index.vue'),
-        alias: '/'
+        component: () => import('@/pages/CsServers/ui/index.vue')
     },
     {
         path: '/teamspeak',
         name: 'TeamSpeak',
-        component: () => import('@/pages/TeamSpeak/ui/index.vue')
+        component: () => import('@/pages/TeamSpeak/ui/index.vue'),
+        alias: '/'
     }
 ]
 
