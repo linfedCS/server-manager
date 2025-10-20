@@ -8,7 +8,6 @@ export interface Crosshair {
     alpha: number
     outlineEnabled: boolean
     outline: number
-    color: number
     thickness: number
     centerDotEnabled: boolean
     splitDistance: number

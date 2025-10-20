@@ -1,163 +1,132 @@
 <template>
-    <div class="crosshair-generator flex flex-col items-center gap-4 p-4 bg-gray-900 text-white rounded-2xl max-w-md mx-auto">
-        <h2 class="text-xl font-semibold">CS2 Crosshair Generator</h2>
-
+    <div class="crosshair-generator">
         <canvas
+            id="crosshair-canvas"
             ref="canvasRef"
-            width="256"
             height="256"
-            class="border border-gray-600 rounded-lg bg-black"
+            width="256"
         ></canvas>
 
-        <div class="controls w-full flex flex-col gap-2">
-            <label class="flex justify-between items-center">
-                Color:
-                <input
-                    v-model="settings.color"
-                    type="color"
-                    class="w-20 h-8 rounded"
+        <div class="controls">
+            <LabelWrapper
+                id="crosshair_color"
+                text="Настройки цвета"
+            >
+                <ColorPicker
+                    :model-value="getColor()"
+                    format="rgb"
+                    @update:model-value="setColor($event)"
                 />
-            </label>
+            </LabelWrapper>
 
-            <label class="flex justify-between items-center">
-                Size:
-                <input
-                    v-model.number="settings.size"
-                    type="range"
-                    min="1"
-                    max="20"
+            <LabelWrapper
+                id="crosshair_size"
+                text="Размер"
+                fluid-element
+            >
+                <CrosshairGeneratorSlider
+                    v-model="settings.length"
+                    :min="0"
+                    :max="15"
                 />
-                <span>{{ settings.size }}</span>
-            </label>
+            </LabelWrapper>
 
-            <label class="flex justify-between items-center">
-                Thickness:
-                <input
-                    v-model.number="settings.thickness"
-                    type="range"
-                    min="1"
-                    max="6"
+            <LabelWrapper
+                id="crosshair_thickness"
+                text="Толщина"
+                fluid-element
+            >
+                <CrosshairGeneratorSlider
+                    v-model="settings.thickness"
+                    :min="0"
+                    :max="3"
                 />
-                <span>{{ settings.thickness }}</span>
-            </label>
+            </LabelWrapper>
 
-            <label class="flex justify-between items-center">
-                Gap:
-                <input
-                    v-model.number="settings.gap"
-                    type="range"
-                    min="0"
-                    max="20"
+            <LabelWrapper
+                id="crosshair_gap"
+                text="Внутренний отступ"
+                fluid-element
+            >
+                <CrosshairGeneratorSlider
+                    v-model="settings.gap"
+                    :min="-5"
+                    :max="5"
                 />
-                <span>{{ settings.gap }}</span>
-            </label>
+            </LabelWrapper>
 
-            <label class="flex justify-between items-center">
-                Outline:
-                <input
+            <LabelWrapper
+                id="crosshair_outline_enabled"
+                text="Включить обводку"
+            >
+                <ToggleSwitch v-model="settings.outlineEnabled" />
+            </LabelWrapper>
+
+            <LabelWrapper
+                v-if="settings.outlineEnabled"
+                id="crosshair_outline"
+                text="Ширина обводки"
+                fluid-element
+            >
+                <CrosshairGeneratorSlider
                     v-model="settings.outline"
-                    type="checkbox"
+                    :min="0"
+                    :max="3"
                 />
-            </label>
+            </LabelWrapper>
 
-            <label class="flex justify-between items-center">
-                Center Dot:
-                <input
-                    v-model="settings.dot"
-                    type="checkbox"
-                />
-            </label>
+            <LabelWrapper
+                id="crosshair_dot"
+                text="Точка в центре"
+            >
+                <ToggleSwitch v-model="settings.centerDotEnabled" />
+            </LabelWrapper>
+
+            <LabelWrapper
+                id="crosshair_dot"
+                text="Т-образный прицел"
+            >
+                <ToggleSwitch v-model="settings.tStyleEnabled" />
+            </LabelWrapper>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { ColorPicker, ToggleSwitch } from 'primevue'
 import { onMounted, ref, watch } from 'vue'
 
 import type { Crosshair } from '@/widgets/CrosshairGenerator/types'
 
+import { LabelWrapper } from '@/shared/ui'
+import CrosshairGeneratorSlider from '@/widgets/CrosshairGenerator/ui/CrosshairGeneratorSlider.vue'
+import { useCrosshairGenerator } from '@/widgets/CrosshairGenerator/useCrosshairGenerator'
+
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 
 const settings = ref<Crosshair>({
-    length: 10,
+    length: 5,
     red: 0,
     green: 255,
     blue: 0,
-    gap: 5,
-    alphaEnabled: true,
-    alpha: 0,
+    gap: 3,
+    alphaEnabled: true, // #not used
+    alpha: 0, // #not used
     outlineEnabled: false,
     outline: 0,
-    color: 1,
-    thickness: 2,
-    centerDotEnabled: true,
-    splitDistance: 0,
-    fixedCrosshairGap: 0,
-    innerSplitAlpha: 0,
-    outerSplitAlpha: 0,
-    splitSizeRatio: 0,
+    thickness: 1,
+    centerDotEnabled: false,
+    splitDistance: 0, // #not used
+    fixedCrosshairGap: 0, // #not used
+    innerSplitAlpha: 0, // #not used
+    outerSplitAlpha: 0, // #not used
+    splitSizeRatio: 0, // #not used
     tStyleEnabled: false,
-    deployedWeaponGapEnabled: false,
-    style: 0
+    deployedWeaponGapEnabled: false, // #not used
+    style: 0 // #not used
 })
 
-const drawCrosshair = () => {
-    const canvas = canvasRef.value
-    if (!canvas) {
-        return
-    }
-    const ctx = canvas.getContext('2d')
-    if (!ctx) {
-        return
-    }
-
-    const { color, length, thickness, gap, centerDotEnabled: dot, outline } = settings.value
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
-
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-    // Helper to draw a line with optional outline
-    const drawLine = (x1: number, y1: number, x2: number, y2: number) => {
-        if (outline) {
-            ctx.strokeStyle = 'black'
-            ctx.lineWidth = thickness + 2
-            ctx.beginPath()
-            ctx.moveTo(x1, y1)
-            ctx.lineTo(x2, y2)
-            ctx.stroke()
-        }
-
-        ctx.strokeStyle = color
-        ctx.lineWidth = thickness
-        ctx.beginPath()
-        ctx.moveTo(x1, y1)
-        ctx.lineTo(x2, y2)
-        ctx.stroke()
-    }
-
-    // Draw crosshair lines
-    drawLine(centerX - gap - length, centerY, centerX - gap, centerY) // Left
-    drawLine(centerX + gap, centerY, centerX + gap + length, centerY) // Right
-    drawLine(centerX, centerY - gap - length, centerX, centerY - gap) // Top
-    drawLine(centerX, centerY + gap, centerX, centerY + gap + length) // Bottom
-
-    // Draw center dot
-    if (dot) {
-        if (outline) {
-            ctx.fillStyle = 'black'
-            ctx.beginPath()
-            ctx.arc(centerX, centerY, thickness / 2 + 1, 0, Math.PI * 2)
-            ctx.fill()
-        }
-
-        ctx.fillStyle = color
-        ctx.beginPath()
-        ctx.arc(centerX, centerY, thickness / 2, 0, Math.PI * 2)
-        ctx.fill()
-    }
-}
+const { getColor, setColor, drawCrosshair } = useCrosshairGenerator(settings, canvasRef)
 
 onMounted(() => {
     drawCrosshair()
@@ -166,8 +135,26 @@ onMounted(() => {
 watch(settings, drawCrosshair, { deep: true })
 </script>
 
-<style scoped>
+<style lang="scss">
+#crosshair-canvas {
+    margin: auto;
+    display: block;
+}
+
 .crosshair-generator input[type='range'] {
     width: 150px;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px 24px;
+    background-color: var(--p-neutral-900);
+    padding: 32px;
+    border-radius: 24px;
+
+    .label-wrapper__text {
+        flex: 0 0 25%;
+    }
 }
 </style>
