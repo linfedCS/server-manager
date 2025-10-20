@@ -44,6 +44,11 @@ const items = computed<MenuItem[]>(() => {
             label: 'CS сервера',
             icon: 'pi pi-server',
             route: 'CsServers'
+        },
+        {
+            label: 'Crosshair',
+            icon: 'pi pi-circle',
+            route: 'CrosshairGenerator'
         }
     ].map(r => ({ ...r, active: route.name === r.route }))
 })

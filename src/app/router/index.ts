@@ -11,6 +11,11 @@ const routes = [
         name: 'TeamSpeak',
         component: () => import('@/pages/TeamSpeak/ui/index.vue'),
         alias: '/'
+    },
+    {
+        path: '/crosshair',
+        name: 'CrosshairGenerator',
+        component: () => import('@/pages/CrosshairGenerator/ui/index.vue')
     }
 ]
 
